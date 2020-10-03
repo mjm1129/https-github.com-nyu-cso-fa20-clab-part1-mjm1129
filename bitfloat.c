@@ -24,19 +24,21 @@ void to_binary(int input_num, int* binary_num){
 	}
 
 	for (int i =  1 ; i < 33; i++){
-	    // printf("%d", binary_num[i-1]);
+	   // printf("%d", binary_num[i-1]);
 	    if (! (i % 4)){
-	        // printf(" ");
+	       // printf(" ");
 	    }
 	}
-	// printf("\n");
+// 	printf("\n");
 }
 
 int to_int(int* binary_num){
 	int temp;
+	int bit;
 
 	for (int i = 31; i >= 0; i--){
-		temp = temp + (binary_num[i] << (31 - i));
+	    bit = binary_num[i];
+		temp = temp + (bit << (31 - i));
 	}
 	return temp;
 }
