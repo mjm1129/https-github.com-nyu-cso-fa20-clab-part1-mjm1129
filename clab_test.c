@@ -9,7 +9,7 @@
 
 void TestBitFloat()
 {
-  printf("---Start testing bitfloat.c\n");  
+  printf("---Start testing bitfloat.c\n");
 
   printf("      get_bit_at_pos...");
   unsigned int n = 1;
@@ -41,7 +41,7 @@ void TestBitFloat()
   n = 0x01020304;
   for (int i = 0; i < sizeof(n); i++) {
     char r = get_most_significant_byte(n);
-    panic_cond(r == i+1, 
+    panic_cond(r == i+1,
         "Most significant byte of %x should be %x (returned %x)",
         n, i+1, r);
     n = n << 8;
@@ -85,12 +85,12 @@ void TestBitFloat()
   }
   printf("passed\n");
 
-  printf("---Test bitfloat.c Passed\n");  
+  printf("---Test bitfloat.c Passed\n");
 }
 
 void TestPtr()
 {
-  printf("---Start testing ptr.c\n");  
+  printf("---Start testing ptr.c\n");
 
   printf("      set_to_five...");
   int v = 0;
@@ -107,24 +107,24 @@ void TestPtr()
   printf("passed\n");
 
   printf("      swap_int...");
-  int x = 1; 
+  int x = 1;
   int y = 2;
   swap_int(&x, &y);
-  panic_cond(x==2&&y==1, 
-      "x=%d y=%d, after swap_int x,y should be %d,%d (instead of %d,%d)", 
+  panic_cond(x==2&&y==1,
+      "x=%d y=%d, after swap_int x,y should be %d,%d (instead of %d,%d)",
       1, 2, 2, 1, x, y);
   swap_int(&x, &y);
-  panic_cond(x==1&&y==2, 
+  panic_cond(x==1&&y==2,
       "x=%d y=%d, after swap_int x,y should be %d,%d (instead of %d,%d)",
       2, 1, 1, 2, x, y);
   printf("passed\n");
 
-  printf("---Test ptr.c Passed\n");  
+  printf("---Test ptr.c Passed\n");
 }
 
 void TestArray()
 {
-  printf("---Start testing array.c\n");  
+  printf("---Start testing array.c\n");
 
   printf("      array_sum...");
   int a[10] = {10,9,8,7,6,5,4,3,2,1};
@@ -143,10 +143,10 @@ void TestArray()
   array_cpy(d+1, a+1, 8);
   for (int i = 0; i < 10; i++) {
     if (i > 0 && i < 9) {
-      panic_cond(d[i] == a[i], 
+      panic_cond(d[i] == a[i],
           "after array_cpy, d[%d] should be %d (instead of %d)", i, a[i], d[i]);
     } else {
-      panic_cond(d[i] == 0, 
+      panic_cond(d[i] == 0,
           "after array_cpy, d[%d] should be unchanged 0 (instead of %d)", i, d[i]);
     }
   }
@@ -155,7 +155,7 @@ void TestArray()
   printf("      bubble_sort...");
   bubble_sort(a, 10);
   for (int i = 0; i < 9; i++) {
-    panic_cond(a[i] <= a[i+1], 
+    panic_cond(a[i] <= a[i+1],
         "after bubble_sort, a[%d] <= a[%d] should be true but is not (%d, %d)",
         i, i+1, a[i], a[i+1]);
   }
@@ -168,7 +168,7 @@ void TestArray()
         instead of %08x", y);
   printf("passed\n");
 
-  printf("---Test array.c Passed\n");  
+  printf("---Test array.c Passed\n");
 
 }
 
