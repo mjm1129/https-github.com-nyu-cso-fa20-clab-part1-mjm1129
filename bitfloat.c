@@ -149,28 +149,13 @@ char get_most_significant_byte(unsigned int n)
 // Return true if n1+n2 causes overflow, return false otherwise
 bool sum_overflowed(int n1, int n2)
 {
-  int carry; // carry
-
-  int max_length;
-
-  // find the max length of the numbers (n1, n2)
-  if (get_most_significant_byte(n1) > get_most_significant_byte(n2)){
-  	max_length = get_most_significant_byte(n1);
+  int result = n1 + n2;
+  if (n1 > 0 && n2 > 0 && result < 0){
+  	return 1;
+  } else if (n1 < 0 && n2 < 0 && result > 0){
+  	return 1;
   } else {
-		max_length = get_most_significant_byte(n2);
-  }
-
-  // addition
-  while (n2){
-     carry = (n1 & n2) << 1; // find sum and carry left
-     n1 = n1 ^ n2; // find sum
-     n2 = carry;
-  }
-
-  if (get_most_significant_byte(n1) > max_length){
-     return 1;
-  } else {
-     return 0;
+  	return 0;
   }
 }
 
@@ -227,6 +212,8 @@ unsigned char get_exponent_field(float f)
 		}
 	}
 	float mantissa = temp;
-  printf("%d\n%d\n%.20lf\n",  sign, exponent, mantissa);
+
+	return exponent;
+  //printf("%d\n%d\n%.20lf\n",  sign, exponent, mantissa);
 }
 
