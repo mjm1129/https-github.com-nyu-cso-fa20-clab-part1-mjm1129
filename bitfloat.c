@@ -165,7 +165,7 @@ bool sum_overflowed(int n1, int n2)
 //and return it as an unsigned byte
 unsigned char get_exponent_field(float f)
 {
-	printf("\n\nf = %f\n", f);
+	// printf("\n\nf = %f\n", f);
 	float abs_val = f;
 	int sign;
 	
@@ -180,14 +180,14 @@ unsigned char get_exponent_field(float f)
   //float base[11] = {128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25, 0.125, };
   //int rep[11] =    {  0,  0,  0,  0, 0, 0, 0, 0,   0,    0,     0};
   //                    1    1  0   0  0  0  0  0  0
-  float base[32];
-  int rep[32];
+  float base[64];
+  int rep[64];
   
   //fill in above
-  float temp = 65536;
-  int last_int_index = 16;
+  float temp = 4294967296;
+  int last_int_index = 32;
   
-  for(int i = 0; i < 32; i++){
+  for(int i = 0; i < 64; i++){
   	base[i] = temp;
   	rep[i] = 0;
   	temp = temp / 2;
@@ -199,15 +199,15 @@ unsigned char get_exponent_field(float f)
   
   float int_part = abs_val - dec_part;
   //printf("%d\n", int_ver);
-  for (int i = 0; i < 32; i++){
+  for (int i = 0; i < 64; i++){
   	if (i <= last_int_index){					// int part
   		if (int_part / base[i] >= 1){
   			rep[i] = 1;
   			abs_val -= base[i];
   		}
   	} else {						// decimal part
-  		// printf("%f left\n", abs_val);
-  		if (abs_val > base[i] && abs_val / base[i] >= 0){
+  		// printf("%f left. next is %f\n", abs_val, base[i]);
+  		if (abs_val >= base[i] && abs_val / base[i] >= 0){
   			rep[i] = 1;
   			abs_val -= base[i];
   		}
@@ -222,20 +222,20 @@ unsigned char get_exponent_field(float f)
   bool first_found = false;
   int index = 0;
   int one_pos;
-  for(int i = 0; i < 32; i++){
+  for(int i = 0; i < 64; i++){
   	if (!first_found && rep[i] == 1){
   		first_found = true;
   		one_pos = i;
   	}
   }
-  printf("pos: %d\n", one_pos);
-  print_array(&(rep[0]), 32);
-  //if (sign == 0){
+  //printf("pos: %d\n", one_pos);
+  //print_array(&(rep[0]), 32);
+  if (sign == 0){
   	return last_int_index - one_pos + 127;
-  //}
-  //else {
-  //	return (-1)*(one_pos+1)+127;
-  //}
+  }
+  else {
+  	return last_int_index - one_pos + 127;
+  }
 }
 
 void print_array(int *arr, int length){
