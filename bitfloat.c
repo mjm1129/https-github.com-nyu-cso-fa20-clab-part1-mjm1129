@@ -3,6 +3,8 @@
 #include <assert.h>
 #include <stdlib.h>
 
+void print_array(int *arr, int length); // just for debugging
+
 // credits to myself few months ago. This is the code that I have wrote before
 /* switch integer to a binary number
  * Parameters:
@@ -163,57 +165,88 @@ bool sum_overflowed(int n1, int n2)
 //and return it as an unsigned byte
 unsigned char get_exponent_field(float f)
 {
-  //TODO: Your code here.
-  float abs_val = f;
-
-  // sign
-  int sign;
+	printf("\n\nf = %f\n", f);
+	float abs_val = f;
+	int sign;
+	
 	if (f >= 0){
-		sign = 1;
+		sign = 0;
 	} else{
-		sign = -1;
+		sign = 1;
 		abs_val *= -1;
 	}
+	
+//                    0,  1,  2,  3, 4, 5, 6, 7,   8,    9,    10
+  //float base[11] = {128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25, 0.125, };
+  //int rep[11] =    {  0,  0,  0,  0, 0, 0, 0, 0,   0,    0,     0};
+  //                    1    1  0   0  0  0  0  0  0
+  float base[32];
+  int rep[32];
+  
+  //fill in above
+  float temp = 65536;
+  int last_int_index = 16;
+  
+  for(int i = 0; i < 32; i++){
+  	base[i] = temp;
+  	rep[i] = 0;
+  	temp = temp / 2;
+  }
 
-	int exponent = 0;
-	float temp = abs_val;
-	// keep on dividing for the binary.
-	// after this we will have the exponenet
+  int int_ver = abs_val;
+  
+  float dec_part = abs_val - int_ver;
+  
+  float int_part = abs_val - dec_part;
+  //printf("%d\n", int_ver);
+  for (int i = 0; i < 32; i++){
+  	if (i <= last_int_index){					// int part
+  		if (int_part / base[i] >= 1){
+  			rep[i] = 1;
+  			abs_val -= base[i];
+  		}
+  	} else {						// decimal part
+  		// printf("%f left\n", abs_val);
+  		if (abs_val > base[i] && abs_val / base[i] >= 0){
+  			rep[i] = 1;
+  			abs_val -= base[i];
+  		}
+  	}
+  	
+  	if (abs_val == 0){
+  		break;
+  	}
+  }
 
-	int IEEE_binary[32];
-	// printf("%f\n\n", temp);
+  // find first 1
+  bool first_found = false;
+  int index = 0;
+  int one_pos;
+  for(int i = 0; i < 32; i++){
+  	if (!first_found && rep[i] == 1){
+  		first_found = true;
+  		one_pos = i;
+  	}
+  }
+  printf("pos: %d\n", one_pos);
+  print_array(&(rep[0]), 32);
+  //if (sign == 0){
+  	return last_int_index - one_pos + 127;
+  //}
+  //else {
+  //	return (-1)*(one_pos+1)+127;
+  //}
+}
 
-	if (temp == 0){
-		exponent = -126; // special coding
-	} else if (temp > 1){
-		// printf("if1");
-		while(!(temp < 2)){ // because the input is float, can not do >> or <<. please don't take off points...
-			temp /= 2;
-			exponent++;
-
-			//added
-			if (exponent == 126){
-				exponent = 126;
-				break;
-			}
-
-		}
-	} else {
-		// printf("if2");
-		while(!(temp >= 1)){ // because the input is float, can not do >> or <<. please don't take off points...
-			temp *= 2;
-			exponent--;
-			// printf("%f\n", temp);
-			// added
-			if (exponent == -126){
-				exponent = -126;
-				break;
-			}
-		}
+void print_array(int *arr, int length){
+	printf("\n");
+	for (int i = 0; i < length; i++){
+		printf("%d\t", i);
 	}
-	float mantissa = temp;
-
-	return exponent;
-  //printf("%d\n%d\n%.20lf\n",  sign, exponent, mantissa);
+	printf("\n");
+	for (int i = 0; i < length; i++){
+		printf("%d\t", arr[i]);
+	}
+	printf("\n\n");
 }
 

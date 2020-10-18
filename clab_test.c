@@ -66,24 +66,29 @@ void TestBitFloat()
   }
   printf("passed\n");
 
-  // printf("      get_exponent_field...");
-  // float bf = 1.0, sf = 1.0;
-  // for (int i = 0; i < 20; i++) {
-  //   float f = bf * 1.5;
-  //   unsigned char r = get_exponent_field(f);
-  //   panic_cond(r == i+127,
-  //       "float %f (bit pattern %x) exponent should be %x (returned %x)",
-  //       f, *(int *)&f, i, r);
-  //   bf = bf * 2.0;
 
-  //   sf = sf / 2.0;
-  //   f = -1*sf * 1.5;
-  //   r = get_exponent_field(f);
-  //   panic_cond(r == (-1)*(i+1)+127,
-  //       "float %f (bit pattern %x) exponent should be %x (returned %x)",
-  //       f, *(int *)&f, (-1)*(i+1)+127, r);
-  // }
-  // printf("passed\n");
+  printf("      get_exponent_field...");
+  printf("\n");
+  float bf = 1.0, sf = 1.0;
+  for (int i = 0; i < 20; i++) {
+    float f = bf * 1.5;
+    unsigned char r = get_exponent_field(f);
+    panic_cond(r == i+127,
+        "float %f (bit pattern %x) exponent should be %x (returned %x)",
+        f, *(int *)&f, i, r);
+    printf("1. r = %d\n", r);
+    bf = bf * 2.0;
+
+    sf = sf / 2.0;
+    f = -1*sf * 1.5;
+    r = get_exponent_field(f);
+    printf("2. r = %d, bf = %f, sf = %f\n", r, bf, sf);
+    panic_cond(r == (-1)*(i+1)+127,
+        "float %f (bit pattern %x) exponent should be %x (returned %x)",
+        f, *(int *)&f, (-1)*(i+1)+127, r);
+    
+  }
+  printf("passed\n");
 
   printf("---Test bitfloat.c Passed\n");
 }
